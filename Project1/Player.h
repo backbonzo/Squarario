@@ -16,6 +16,8 @@ class Player{
 		void setPlayerXY(sf::Vector2f);
 		void setPlayerBlob(sf::RectangleShape);
 		void setPlayerSpeed(float);
+
+		sf::Vector2f getPlayerPos();
 		
 		sf::Vector2f getPlayerSize();
 		sf::Color getPlayerColor();

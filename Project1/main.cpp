@@ -41,6 +41,7 @@ class foodObj{
 		~foodObj(){};
 };
 
+							//int h -- int w
 void getPos(sf::Vector2f& pos, int h, int w) {
 	do
 	{	pos.x = rand() % w;
@@ -58,6 +59,13 @@ int main() {
 
 	//sf::Vector2f shapeSzie1(25, 25);
 	sf::RenderWindow window(sf::VideoMode(H, W), "Squarar.io");
+
+	//Create custom view/camera
+	sf::View player_view(sf::FloatRect(0, 0, window.getSize().x - 224, window.getSize().y - 224));
+
+	//text
+
+
 	//sf::RectangleShape shape1(shapeSzie1);
 	//sf::CircleShape  food(10.0f);
 	//shape1.setFillColor(sf::Color::Red);
@@ -67,10 +75,10 @@ int main() {
 
 	sf::Vector2f foodpos;
 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 100; i++)
 	{
-		getPos(foodpos, H, W);
-		foodObj food(sf::CircleShape(5.0f), sf::Color::White, foodpos);
+		getPos(foodpos, 2000, 2000);
+		foodObj food(sf::CircleShape(10.0f), sf::Color::White, foodpos);
 		foods.push_back(food);
 	}
 
@@ -110,6 +118,10 @@ int main() {
 
 		//moves player of wasd keys are pressed and making h, w as border for now
 		player.movePlayer(sf::Keyboard(), H, W);
+		
+		// we keep our view centered on the player
+		player_view.setCenter(player.getPlayerPos());
+		window.setView(player_view);
 
 		window.clear();
 
