@@ -4,42 +4,7 @@
 #include "Player.h"
 #include <iostream>
 #include <vector>
-
-class foodObj{
-	private:
-		sf::CircleShape foodBlob;
-		sf::Color foodColor;
-		sf::Vector2f foodXY;
-		bool eaten = false;
-	public:
-		void setFoodBlob(sf::CircleShape foodBlob) {
-			this->foodBlob = foodBlob;
-	}
-		void setfoodColor(sf::Color color) {
-			this->foodColor = foodColor;
-		}
-
-		void updatePos(sf::Vector2f foodXY) {
-			this->foodBlob.setPosition(foodXY);
-		}
-
-		sf::CircleShape getFoodBlob() {
-			return foodBlob;
-		}
-
-		bool isEaten() {
-			return this->eaten;
-		}
-
-		foodObj(sf::CircleShape foodBlob, sf::Color foodColor, sf::Vector2f foodXY) {
-			this->foodBlob = foodBlob;
-			this->foodColor = foodColor;
-			this->foodXY = foodXY;
-			this->foodBlob.setFillColor(foodColor);
-			this->updatePos(foodXY);
-		};
-		~foodObj(){};
-};
+#include "FoodObj.h"
 
 							//int h -- int w
 void getPos(sf::Vector2f& pos, int h, int w) {
@@ -71,14 +36,14 @@ int main() {
 	//shape1.setFillColor(sf::Color::Red);
 	//food.setFillColor(sf::Color::White);
 	//shape1.setPosition(H/2,W/2);
-	std::vector<foodObj> foods;
+	std::vector<FoodObj> foods;
 
 	sf::Vector2f foodpos;
 
 	for (int i = 0; i < 100; i++)
 	{
 		getPos(foodpos, 2000, 2000);
-		foodObj food(sf::CircleShape(10.0f), sf::Color::White, foodpos);
+		FoodObj food(sf::CircleShape(10.0f), sf::Color::White, foodpos);
 		foods.push_back(food);
 	}
 
@@ -138,8 +103,6 @@ int main() {
 		eaten = false;
 
 	}
-
-
 
 	return 0;
 }
