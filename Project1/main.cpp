@@ -14,8 +14,60 @@ void getPos(sf::Vector2f& pos, int h, int w) {
 	} while ((!(pos.x > 10 && pos.x < w - 10) || !(pos.y > 10 && pos.y < w - 10)));
 }
 
+//class Wall{
+//	private:
+//		sf::Vector2f topWallPos;
+//		sf::Vector2f leftWallPos;
+//		sf::Vector2f bottomWallPos;
+//		sf::Vector2f rightWallPos;
+//		
+//		sf::RectangleShape topWall;
+//		sf::RectangleShape leftWall;
+//		sf::RectangleShape bottomWall;
+//		sf::RectangleShape rightWall;
+//	public:
+//		Wall(sf::Vector2f topWallPos, sf::Vector2f leftWallPos, sf::Vector2f bottomWallPos, sf::Vector2f rightWallPos, sf::Vector2f mapSize) {
+//			this->topWall = sf::RectangleShape(sf::Vector2f(mapSize.x, 2));
+//			this->topWall.setPosition(topWallPos);
+//			this->topWall.setFillColor(sf::Color::Blue);
+//
+//			this->bottomWall = sf::RectangleShape(sf::Vector2f(mapSize.x, 2));
+//			this->bottomWall.setPosition(bottomWallPos);
+//			this->bottomWall.setFillColor(sf::Color::Blue);
+//
+//			this->leftWall = sf::RectangleShape(sf::Vector2f(2, mapSize.y));
+//			this->leftWall.setPosition(leftWallPos);
+//			this->leftWall.setFillColor(sf::Color::Blue);
+//
+//			this->rightWall = sf::RectangleShape(sf::Vector2f(2, mapSize.y));
+//			this->rightWall.setPosition(rightWallPos);
+//			this->rightWall.setFillColor(sf::Color::Blue);
+//		};
+//
+//		sf::RectangleShape getTopWall() {
+//			return this->topWall;
+//		}
+//		sf::RectangleShape getBottomWall() {
+//			return this->bottomWall;
+//		}
+//		sf::RectangleShape getLeftWall() {
+//			return this->leftWall;
+//		}
+//		sf::RectangleShape getRigtWall() {
+//			return this->rightWall;
+//		}
+//
+//};
+
+
 int main() {
 	srand(time(NULL));
+
+	const sf::Vector2f mapSize(5000, 5000);
+
+	//Wall mapsWalls(sf::Vector2f(0,0), sf::Vector2f(0,0), sf::Vector2f(0, mapSize.y), sf::Vector2f(mapSize.x, 0), mapSize);
+
+	bool wallsdrawn = false;
 
 	int H = 1024, W = 1024;
 
@@ -43,7 +95,7 @@ int main() {
 	for (int i = 0; i < 100; i++)
 	{
 		getPos(foodpos, 2000, 2000);
-		FoodObj food(sf::CircleShape(10.0f), sf::Color::White, foodpos);
+		FoodObj food(sf::CircleShape(10.0f), sf::Color(rand() % 255, rand() % 255, rand() % 255), foodpos);
 		foods.push_back(food);
 	}
 
@@ -82,7 +134,7 @@ int main() {
 		}
 
 		//moves player of wasd keys are pressed and making h, w as border for now
-		player.movePlayer(sf::Keyboard(), H, W);
+		player.movePlayer(sf::Keyboard(), mapSize.x, mapSize.y);
 		
 		// we keep our view centered on the player
 		player_view.setCenter(player.getPlayerPos());
@@ -90,11 +142,22 @@ int main() {
 
 		window.clear();
 
+		//if (!wallsdrawn)
+		//{
+		//	window.draw(mapsWalls.getTopWall());
+		//	window.draw(mapsWalls.getBottomWall());
+		//	window.draw(mapsWalls.getLeftWall());
+		//	window.draw(mapsWalls.getRigtWall());
+
+		//}
+
 			for (auto&& food: foods)
 			{
 				if (!food.isEaten());
 				window.draw(food.getFoodBlob());
 			}
+
+
 
 		window.draw(player.getPlayerBlob());
 
