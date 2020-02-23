@@ -5,7 +5,7 @@ Player::Player(sf::Vector2f playerSize , sf::Vector2f playerXY, sf::Color player
 	this->playerSize = playerSize;
 	this->playerXY = playerXY;
 	this->playerColor = playerColor;
-	this->playerSpeed = 2.2f;
+	this->playerSpeed = 0.2f;
 
 	this->playerBlob = sf::RectangleShape(playerSize);
 	this->playerBlob.setFillColor(playerColor);

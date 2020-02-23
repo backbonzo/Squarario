@@ -19,6 +19,8 @@ void getPos(sf::Vector2f& pos, int h, int w) {
 int main() {
 	srand(time(NULL));
 
+	
+
 	// creating input for playble area
 	const sf::Vector2f mapSize(5000, 5000);
 
@@ -81,7 +83,6 @@ int main() {
 		{
 			if (player.getPlayerBlob().getGlobalBounds().intersects(food.getFoodBlob().getGlobalBounds()))
 			{
-				eaten = true;
 				getPos(foodpos, H, W);
 				food.updatePos(foodpos);
 				player.setPlayerSpeed(player.getPlayerSpeed());
@@ -99,6 +100,7 @@ int main() {
 		player_view.setCenter(player.getPlayerPos().x + player.getPlayerSize().x/2, player.getPlayerPos().y + player.getPlayerSize().y / 2);
 		window.setView(player_view);
 
+
 		window.clear();
 
 		// draws walls
@@ -109,17 +111,14 @@ int main() {
 
 			for (auto&& food: foods)
 			{
-				if (!food.isEaten());
+				if (!food.isEaten())
 				window.draw(food.getFoodBlob());
 			}
-
-
 
 		window.draw(player.getPlayerBlob());
 
 		window.display();
 
-		eaten = false;
 
 	}
 
