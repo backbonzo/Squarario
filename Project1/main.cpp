@@ -2,9 +2,11 @@
 #include <time.h>
 #include <cstdlib>
 #include "Player.h"
+#include "FoodObj.h"
+#include "Wall.h"
 #include <iostream>
 #include <vector>
-#include "FoodObj.h"
+
 
 							//int h -- int w
 void getPos(sf::Vector2f& pos, int h, int w) {
@@ -14,60 +16,17 @@ void getPos(sf::Vector2f& pos, int h, int w) {
 	} while ((!(pos.x > 10 && pos.x < w - 10) || !(pos.y > 10 && pos.y < w - 10)));
 }
 
-//class Wall{
-//	private:
-//		sf::Vector2f topWallPos;
-//		sf::Vector2f leftWallPos;
-//		sf::Vector2f bottomWallPos;
-//		sf::Vector2f rightWallPos;
-//		
-//		sf::RectangleShape topWall;
-//		sf::RectangleShape leftWall;
-//		sf::RectangleShape bottomWall;
-//		sf::RectangleShape rightWall;
-//	public:
-//		Wall(sf::Vector2f topWallPos, sf::Vector2f leftWallPos, sf::Vector2f bottomWallPos, sf::Vector2f rightWallPos, sf::Vector2f mapSize) {
-//			this->topWall = sf::RectangleShape(sf::Vector2f(mapSize.x, 2));
-//			this->topWall.setPosition(topWallPos);
-//			this->topWall.setFillColor(sf::Color::Blue);
-//
-//			this->bottomWall = sf::RectangleShape(sf::Vector2f(mapSize.x, 2));
-//			this->bottomWall.setPosition(bottomWallPos);
-//			this->bottomWall.setFillColor(sf::Color::Blue);
-//
-//			this->leftWall = sf::RectangleShape(sf::Vector2f(2, mapSize.y));
-//			this->leftWall.setPosition(leftWallPos);
-//			this->leftWall.setFillColor(sf::Color::Blue);
-//
-//			this->rightWall = sf::RectangleShape(sf::Vector2f(2, mapSize.y));
-//			this->rightWall.setPosition(rightWallPos);
-//			this->rightWall.setFillColor(sf::Color::Blue);
-//		};
-//
-//		sf::RectangleShape getTopWall() {
-//			return this->topWall;
-//		}
-//		sf::RectangleShape getBottomWall() {
-//			return this->bottomWall;
-//		}
-//		sf::RectangleShape getLeftWall() {
-//			return this->leftWall;
-//		}
-//		sf::RectangleShape getRigtWall() {
-//			return this->rightWall;
-//		}
-//
-//};
-
-
 int main() {
 	srand(time(NULL));
 
+	// creating input for playble area
 	const sf::Vector2f mapSize(5000, 5000);
 
-	//Wall mapsWalls(sf::Vector2f(0,0), sf::Vector2f(0,0), sf::Vector2f(0, mapSize.y), sf::Vector2f(mapSize.x, 0), mapSize);
-
-	bool wallsdrawn = false;
+	// creatinig walls to outline blocked area
+	Wall topWalls(sf::Vector2f(0, 0), mapSize.x, 2);
+	Wall bottomWalls(sf::Vector2f(0, mapSize.y), mapSize.x, 2);
+	Wall leftWalls(sf::Vector2f(0, 0), 2, mapSize.y);
+	Wall rightWalls(sf::Vector2f(mapSize.x, 0), 2, mapSize.y);
 
 	int H = 1024, W = 1024;
 
@@ -137,19 +96,16 @@ int main() {
 		player.movePlayer(sf::Keyboard(), mapSize.x, mapSize.y);
 		
 		// we keep our view centered on the player
-		player_view.setCenter(player.getPlayerPos());
+		player_view.setCenter(player.getPlayerPos().x + player.getPlayerSize().x/2, player.getPlayerPos().y + player.getPlayerSize().y / 2);
 		window.setView(player_view);
 
 		window.clear();
 
-		//if (!wallsdrawn)
-		//{
-		//	window.draw(mapsWalls.getTopWall());
-		//	window.draw(mapsWalls.getBottomWall());
-		//	window.draw(mapsWalls.getLeftWall());
-		//	window.draw(mapsWalls.getRigtWall());
-
-		//}
+		// draws walls
+			window.draw(topWalls.getWall());
+			window.draw(bottomWalls.getWall());
+			window.draw(leftWalls.getWall());
+			window.draw(rightWalls.getWall());
 
 			for (auto&& food: foods)
 			{
