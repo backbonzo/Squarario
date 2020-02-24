@@ -8,6 +8,9 @@
 #include <vector>
 #include <string>
 
+//THIS IS INSIDE THE DEV BRANCH
+//Before editing files: Make a new BRANCH with feature you are changing
+
 void updateScore(int numScore, sf::Text& text) 
 {
 	text.setString(std::to_string(numScore));
@@ -102,7 +105,6 @@ int main() {
 		}
 
 		sf::Vector2f shapepos = player.getPlayerBlob().getPosition();
-
 		for (auto&& food : foods )
 		{
 			if (player.getPlayerBlob().getGlobalBounds().intersects(food.getFoodBlob().getGlobalBounds()))
