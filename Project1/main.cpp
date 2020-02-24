@@ -12,8 +12,6 @@ void updateScore(int numScore, sf::Text& text)
 {
 	text.setString(std::to_string(numScore));
 }
-
-
 							//int h -- int w
 void getPos(sf::Vector2f& pos, int h, int w) {
 	do
@@ -24,8 +22,6 @@ void getPos(sf::Vector2f& pos, int h, int w) {
 
 int main() {
 	srand(time(NULL));
-
-	
 
 	// creating input for playble area
 	const sf::Vector2f mapSize(5000, 5000);
@@ -71,7 +67,6 @@ int main() {
 	scoreText.setFillColor(sf::Color::Blue);
 	scoreText.setString("Score: ");
 
-
 	std::vector<FoodObj> foods;
 	sf::Text numText;
 	int numScore = 0; //empty placeholder for score
@@ -80,8 +75,6 @@ int main() {
 	numText.setFillColor(sf::Color::Blue);
 	//Setting the string empty to begin with
 	numText.setString("");
-
-	std::vector<FoodObj> foods;
 	sf::Vector2f foodpos;
 
 	for (int i = 0; i < 100; i++)
@@ -135,14 +128,15 @@ int main() {
 		numText.setPosition(player.getPlayerPos().x +125 - player_view.getSize().x / 2, player.getPlayerPos().y +5 - player_view.getSize().y / 2);
 
 		window.clear();
+		//draw backgrounds
+		window.draw(spriteBG);
 
 		// draws walls
 		window.draw(topWalls.getWall());
 		window.draw(bottomWalls.getWall());
 		window.draw(leftWalls.getWall());
 		window.draw(rightWalls.getWall());
-
-		window.draw(spriteBG);
+		// draw text
 		window.draw(scoreText);
 		window.draw(numText);
 		updateScore(numScore, numText);
@@ -156,8 +150,6 @@ int main() {
 		window.draw(player.getPlayerBlob());
 
 		window.display();
-
-
 	}
 
 	return 0;
