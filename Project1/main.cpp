@@ -2,52 +2,17 @@
 #include <time.h>
 #include <cstdlib>
 #include "Player.h"
+#include "FoodObj.h"
+#include "Wall.h"
 #include <iostream>
 #include <vector>
 #include <string>
 
-void updateScore(int numScore, sf::Text& text) {
+void updateScore(int numScore, sf::Text& text) 
+{
 	text.setString(std::to_string(numScore));
 }
 
-
-class foodObj{
-	private:
-		sf::CircleShape foodBlob;
-		sf::Color foodColor;
-		sf::Vector2f foodXY;
-		bool eaten = false;
-	public:
-		void setFoodBlob(sf::CircleShape foodBlob) {
-			this->foodBlob = foodBlob;
-	}
-		void setfoodColor(sf::Color color) {
-			this->foodColor = foodColor;
-		}
-
-		void updatePos(sf::Vector2f foodXY) {
-			this->foodBlob.setPosition(foodXY);
-		}
-
-		sf::CircleShape getFoodBlob() {
-			return foodBlob;
-		}
-
-		bool isEaten() {
-			return this->eaten;
-		}
-
-		foodObj(sf::CircleShape foodBlob, sf::Color foodColor, sf::Vector2f foodXY) {
-			this->foodBlob = foodBlob;
-			this->foodColor = foodColor;
-			this->foodXY = foodXY;
-			this->foodBlob.setFillColor(foodColor);
-			this->updatePos(foodXY);
-		};
-		~foodObj(){
-
-		};
-};
 
 							//int h -- int w
 void getPos(sf::Vector2f& pos, int h, int w) {
@@ -59,6 +24,17 @@ void getPos(sf::Vector2f& pos, int h, int w) {
 
 int main() {
 	srand(time(NULL));
+
+	
+
+	// creating input for playble area
+	const sf::Vector2f mapSize(5000, 5000);
+
+	// creatinig walls to outline blocked area
+	Wall topWalls(sf::Vector2f(0, 0), mapSize.x, 2);
+	Wall bottomWalls(sf::Vector2f(0, mapSize.y), mapSize.x, 2);
+	Wall leftWalls(sf::Vector2f(0, 0), 2, mapSize.y);
+	Wall rightWalls(sf::Vector2f(mapSize.x, 0), 2, mapSize.y);
 
 	int H = 1024, W = 1024;
 
@@ -95,6 +71,8 @@ int main() {
 	scoreText.setFillColor(sf::Color::Blue);
 	scoreText.setString("Score: ");
 
+
+	std::vector<FoodObj> foods;
 	sf::Text numText;
 	int numScore = 0; //empty placeholder for score
 	numText.setFont(font);
@@ -103,14 +81,14 @@ int main() {
 	//Setting the string empty to begin with
 	numText.setString("");
 
-	std::vector<foodObj> foods;
+	std::vector<FoodObj> foods;
 	sf::Vector2f foodpos;
 
 	for (int i = 0; i < 100; i++)
 	{
 		//getPos foodpos, w, h
 		getPos(foodpos, 2000, 2000);
-		foodObj food(sf::CircleShape(10.0f), sf::Color(rand() % 255, rand() % 255, rand() % 255), foodpos);
+		FoodObj food(sf::CircleShape(10.0f), sf::Color(rand() % 255, rand() % 255, rand() % 255), foodpos);
 		foods.push_back(food);
 	}
 
@@ -136,9 +114,7 @@ int main() {
 		{
 			if (player.getPlayerBlob().getGlobalBounds().intersects(food.getFoodBlob().getGlobalBounds()))
 			{
-				eaten = true;
-				//getPos foodpos, w, h
-				getPos(foodpos, 2000, 2000);
+				getPos(foodpos, H, W);
 				food.updatePos(foodpos);
 				player.setPlayerSpeed(player.getPlayerSpeed());
 				player.setPlayerSize(sf::Vector2f(player.getPlayerSize().x + 1.0f, player.getPlayerSize().y + 1.0f));
@@ -150,27 +126,30 @@ int main() {
 		}
 
 		//moves player of wasd keys are pressed and making h, w as border for now
-		player.movePlayer(sf::Keyboard(), H, W);
+		player.movePlayer(sf::Keyboard(), mapSize.x, mapSize.y);
 		
 		// we keep our view centered on the player
-		player_view.setCenter(player.getPlayerPos());
+		player_view.setCenter(player.getPlayerPos().x + player.getPlayerSize().x/2, player.getPlayerPos().y + player.getPlayerSize().y / 2);
 		window.setView(player_view);
-
-		//scoreText.setPosition(player_view.getViewport().width, player_view.getViewport().height);
 		scoreText.setPosition(player.getPlayerPos().x - player_view.getSize().x/2, player.getPlayerPos().y - player_view.getSize().y / 2);
 		numText.setPosition(player.getPlayerPos().x +125 - player_view.getSize().x / 2, player.getPlayerPos().y +5 - player_view.getSize().y / 2);
 
 		window.clear();
 
-		window.draw(spriteBG);
+		// draws walls
+		window.draw(topWalls.getWall());
+		window.draw(bottomWalls.getWall());
+		window.draw(leftWalls.getWall());
+		window.draw(rightWalls.getWall());
 
+		window.draw(spriteBG);
 		window.draw(scoreText);
 		window.draw(numText);
 		updateScore(numScore, numText);
 
 			for (auto&& food: foods)
 			{
-				if (!food.isEaten());
+				if (!food.isEaten())
 				window.draw(food.getFoodBlob());
 			}
 
@@ -178,7 +157,6 @@ int main() {
 
 		window.display();
 
-		eaten = false;
 
 	}
 
