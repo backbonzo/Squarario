@@ -126,8 +126,8 @@ int main() {
 		// we keep our view centered on the player
 		player_view.setCenter(player.getPlayerPos().x + player.getPlayerSize().x/2, player.getPlayerPos().y + player.getPlayerSize().y / 2);
 		window.setView(player_view);
-		scoreText.setPosition(player.getPlayerPos().x - player_view.getSize().x/2, player.getPlayerPos().y - player_view.getSize().y / 2);
-		numText.setPosition(player.getPlayerPos().x +125 - player_view.getSize().x / 2, player.getPlayerPos().y +5 - player_view.getSize().y / 2);
+		scoreText.setPosition(player_view.getCenter().x - player_view.getSize().x/2, player_view.getCenter().y - player_view.getSize().y / 2);
+		numText.setPosition(player_view.getCenter().x + 125 - player_view.getSize().x / 2 , player_view.getCenter().y + 5 - player_view.getSize().y / 2 );
 
 		window.clear();
 		//draw backgrounds
