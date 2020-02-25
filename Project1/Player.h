@@ -11,7 +11,7 @@ class Player{
 	public:
 		Player(sf::Vector2f, sf::Vector2f, sf::Color);
 
-		void setPlayerSize(sf::Vector2f);
+		void setPlayerSize(sf::Vector2f, float maxSize);
 		void setPlayerColor(sf::Color);
 		void setPlayerXY(sf::Vector2f);
 		void setPlayerBlob(sf::RectangleShape);

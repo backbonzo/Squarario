@@ -20,8 +20,13 @@ void Player::setPlayerSpeed(float playerSpeed) {
 	this->playerSpeed = playerSpeed;
 }
 
-void Player::setPlayerSize(sf::Vector2f playerSize) {
-	this->playerSize = playerSize;
+void Player::setPlayerSize(sf::Vector2f playerSize, float maxSize) {
+	//This checks if the playersize is LESS than 800(temporary size) if it is = set playersize to size
+	if (this->getPlayerSize().x < maxSize && this->getPlayerSize().y < maxSize)
+	{
+		std::cout << "Player Size X:" << this->getPlayerSize().x << " Y:" << this->getPlayerSize().y << std::endl;
+		this->playerSize = playerSize;
+	}
 }
 
 float Player::getPlayerSpeed() {
@@ -51,6 +56,11 @@ sf::Vector2f Player::getPlayerPos() {
 void Player::movePlayer(sf::Keyboard key, int H, int W) {
 	// get the instance of the player
 	sf::RectangleShape player = this->getPlayerBlob();
+
+	if (key.isKeyPressed(sf::Keyboard::LShift))
+	{
+		this->playerSpeed = 10.f;
+	}
 	
 	if (key.isKeyPressed(sf::Keyboard::A))
 	{
