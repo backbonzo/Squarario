@@ -16,7 +16,7 @@ void updateScore(int numScore, sf::Text& text)
 {
 	text.setString(std::to_string(numScore));
 }
-							//int h -- int w
+
 void getPos(sf::Vector2f& pos, sf::Vector2f mapSize) {
 	do
 	{	pos.x = rand() % (int )mapSize.x;
@@ -35,7 +35,8 @@ void checkCollisions(std::vector<FoodObj>& foods, Player& player, sf::Vector2f f
 				getPos(foodpos, mapSize);
 				food.updatePos(foodpos);
 				player.setPlayerSpeed(player.getPlayerSpeed());
-				player.setPlayerSize(sf::Vector2f(player.getPlayerSize().x + 1.0f, player.getPlayerSize().y + 1.0f));
+				//Added maxsize as paratmeter - currently its 500
+				player.setPlayerSize(sf::Vector2f(player.getPlayerSize().x + 1.0f, player.getPlayerSize().y + 1.0f), 500);
 				sf::RectangleShape p = player.getPlayerBlob();
 				p.setSize(player.getPlayerSize());
 				player.setPlayerBlob(p);
@@ -62,11 +63,12 @@ void checkFoodsToDraw(std::vector<FoodObj>& foods, std::vector<FoodObj>& foodsTo
 	}
 }
 
-
 int main() {
 	srand(time(NULL));
+	//window size
+	int H = 1024, W = 1024;
 
-	// creating input for playble area
+	// creating playble area e.g "map"
 	const sf::Vector2f mapSize(5000, 5000);
 
 	// creatinig walls to outline blocked area
@@ -74,8 +76,6 @@ int main() {
 	Wall bottomWalls(sf::Vector2f(0, mapSize.y), mapSize.x, 2);
 	Wall leftWalls(sf::Vector2f(0, 0), 2, mapSize.y);
 	Wall rightWalls(sf::Vector2f(mapSize.x, 0), 2, mapSize.y);
-
-	int H = 1024, W = 1024;
 
 	// create player instance 
 	Player player(sf::Vector2f(25.0f, 25.0f) , sf::Vector2f(H/2, W/2), sf::Color::Red);
@@ -88,14 +88,14 @@ int main() {
 	
 	//Texture & Font & Sprite
 	sf::Texture texture;
-	if (!texture.loadFromFile("res/background.png", sf::IntRect(0, 0, 10000, 10000)))
+	if (!texture.loadFromFile("res/background.png", sf::IntRect(0, 0, 1000, 1000)))
 	{
 		std::cout << "Error: Could not load background picture.";
 	}
 	sf::Sprite spriteBG;
 	texture.setRepeated(true);
 	spriteBG.setTexture(texture);
-	//spriteBG.setColor(sf::Color(0, 0, 0, 255));
+	spriteBG.setTextureRect(sf::IntRect(0, 0, mapSize.x, mapSize.y));
 
 	//Create font and load it from file!
 	sf::Font font;
@@ -110,8 +110,6 @@ int main() {
 	scoreText.setFillColor(sf::Color::Blue);
 	scoreText.setString("Score: ");
 
-	std::vector<FoodObj> foods;
-	std::vector<FoodObj> foodsToDraw;
 	sf::Text numText;
 	int numScore = 0; //empty placeholder for score
 	numText.setFont(font);
@@ -119,8 +117,12 @@ int main() {
 	numText.setFillColor(sf::Color::Blue);
 	//Setting the string empty to begin with
 	numText.setString("");
-	sf::Vector2f foodpos;
 
+	//declaring food objects and vectors
+	std::vector<FoodObj> foods;
+	std::vector<FoodObj> foodsToDraw;
+	sf::Vector2f foodpos;
+	
 	for (int i = 0; i < 1000; i++)
 	{
 		//getPos foodpos, w, h
