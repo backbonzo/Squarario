@@ -9,7 +9,7 @@ Install SFML -> Download Project -> Compile.
 
 TODO: Describe the installation process BETTER
 
-## Usage
+## Usage / Compiling
 
 TODO: Write usage instructions
 
