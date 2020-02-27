@@ -46,6 +46,27 @@ void checkCollisions(std::vector<FoodObj>& foods, Player& player, sf::Vector2f f
 	}
 }
 
+void randomTexture(int result, std::string &path)
+{
+	switch (result)
+	{
+	case 0:
+		path = "res/texture4.png";
+		break;
+	case 1:
+		path = "res/texture1.png";
+		break;
+	case 2:
+		path = "res/texture2.png";
+		break;
+	case 3:
+		path = "res/texture3.png";
+		break;
+	case 4:
+		path = "res/texture5.png";
+		break;
+	}
+}
 
 void checkFoodsToDraw(std::vector<FoodObj>& foods, std::vector<FoodObj>& foodsToDraw, sf::View& player_view, bool& threadsClosed) {
 
@@ -77,8 +98,18 @@ int main() {
 	Wall leftWalls(sf::Vector2f(0, 0), 2, mapSize.y);
 	Wall rightWalls(sf::Vector2f(mapSize.x, 0), 2, mapSize.y);
 
+	int result = rand() % 4;
+	std::cout << "rand: " << result << std::endl;
+	sf::Texture texture1;
+	std::string path = "";
+	randomTexture(result, path);
+	
+	if (!texture1.loadFromFile(path))
+	{
+		std::cout << "Error: Could not load background picture.";
+	}
 	// create player instance 
-	Player player(sf::Vector2f(25.0f, 25.0f) , sf::Vector2f(H/2, W/2), sf::Color::Red);
+	Player player(sf::Vector2f(25.0f, 25.0f) , sf::Vector2f(H/2, W/2), sf::Color::Red, texture1);
 
 	//sf::Vector2f shapeSzie1(25, 25);
 	sf::RenderWindow window(sf::VideoMode(H, W), "Squarar.io");
