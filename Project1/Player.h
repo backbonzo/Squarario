@@ -9,7 +9,7 @@ class Player{
 		sf::RectangleShape playerBlob;
 		float playerSpeed;
 	public:
-		Player(sf::Vector2f, sf::Vector2f, sf::Color);
+		Player(sf::Vector2f, sf::Vector2f, sf::Color, sf::Texture &tex);
 
 		void setPlayerSize(sf::Vector2f, float maxSize);
 		void setPlayerColor(sf::Color);

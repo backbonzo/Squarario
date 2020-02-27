@@ -1,14 +1,16 @@
 #include "Player.h"
 #include <iostream>
 
-Player::Player(sf::Vector2f playerSize , sf::Vector2f playerXY, sf::Color playerColor) {
+Player::Player(sf::Vector2f playerSize , sf::Vector2f playerXY, sf::Color playerColor, sf::Texture &tex) {
 	this->playerSize = playerSize;
 	this->playerXY = playerXY;
 	this->playerColor = playerColor;
 	this->playerSpeed = 0.2f;
 
 	this->playerBlob = sf::RectangleShape(playerSize);
-	this->playerBlob.setFillColor(playerColor);
+	//this->playerBlob.setFillColor(playerColor);
+	//
+	this->playerBlob.setTexture(&tex, false);
 	this->playerBlob.setPosition(playerXY);
 };
 
