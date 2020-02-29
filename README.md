@@ -1,7 +1,6 @@
 # Squarar.IO
 
-An attempt at a singleplayer only(at this state) Agario clone for Windows & Linux. 
-Built with C++ and SFML. 
+## This is network part, and will be merged with the dev branch
 
 ## Installation
 
