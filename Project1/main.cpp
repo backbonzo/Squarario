@@ -8,6 +8,7 @@
 #include <vector>
 #include <string>
 #include <thread>
+#include <SFML/Network.hpp>
 
 //THIS IS INSIDE THE DEV BRANCH
 //Before editing files: Make a new BRANCH with feature you are changing
@@ -86,11 +87,42 @@ void checkFoodsToDraw(std::vector<FoodObj>& foods, std::vector<FoodObj>& foodsTo
 
 int main() {
 	srand(time(NULL));
+
 	//window size
 	int H = 1024, W = 1024;
 
 	// creating playble area e.g "map"
 	const sf::Vector2f mapSize(5000, 5000);
+
+	// dabbing connection
+	sf::TcpSocket socket;
+	sf::Packet packet;
+	sf::IpAddress ip = sf::IpAddress::getLocalAddress();
+
+	char connectionType;
+	std::cout << "enter s for server and c for client: ";
+	std::cin >> connectionType;
+
+	std::cout << "your ip: " << ip << std::endl;
+
+	
+	if (connectionType == 's')
+	{
+		sf::TcpListener lis;
+		lis.listen(2000);
+		lis.accept(socket);
+	}
+	else
+	{
+		std::string ipToConnect;
+		std::cout << "Enter ip to connect to: ";
+		std::cin >> ipToConnect;
+		socket.connect(ipToConnect, 2000);
+	}
+
+	
+
+	socket.setBlocking(false);
 
 	// creatinig walls to outline blocked area
 	Wall topWalls(sf::Vector2f(0, 0), mapSize.x, 2);
@@ -111,7 +143,10 @@ int main() {
 	// create player instance 
 	Player player(sf::Vector2f(25.0f, 25.0f) , sf::Vector2f(H/2, W/2), sf::Color::Red, texture1);
 
-	//sf::Vector2f shapeSzie1(25, 25);
+	// creating placeholder for seconde player for online
+	Player player2(sf::Vector2f(25.0f, 25.0f), sf::Vector2f(H / 2, W / 2), sf::Color::Blue, texture1);
+
+	//creating a window
 	sf::RenderWindow window(sf::VideoMode(H, W), "Squarar.io");
 
 	//Create custom view/camera
@@ -154,7 +189,7 @@ int main() {
 	std::vector<FoodObj> foodsToDraw;
 	sf::Vector2f foodpos;
 	
-	for (int i = 0; i < 1000; i++)
+	for (int i = 0; i < 0; i++)
 	{
 		//getPos foodpos, w, h
 		getPos(foodpos, mapSize);
@@ -167,13 +202,17 @@ int main() {
 	float movSpeed = 0.1f;
 
 	bool threadClosed = false;
+	bool foc = false;
 
 	std::thread threadCollision(checkCollisions, std::ref(foods), std::ref(player), foodpos, std::ref(numScore), mapSize, std::ref(threadClosed));
 	std::thread threadVisFood(checkFoodsToDraw, std::ref(foods), std::ref(foodsToDraw), std::ref(player_view), std::ref(threadClosed));
+
+	sf::Vector2f prevPos, player2Pos;
 	
 	while (window.isOpen())
 	{
 		sf::Event evt;
+		packet = sf::Packet();
 
 		while (window.pollEvent(evt))
 		{
@@ -182,12 +221,38 @@ int main() {
 				threadClosed = true;
 				window.close();
 			}
+			if (evt.type == sf::Event::GainedFocus)
+			{
+				foc = true;
+				
+			}
+			if (evt.type == sf::Event::LostFocus)
+			{
+				foc = false;
+
+			}
 		}
 
-		sf::Vector2f shapepos = player.getPlayerBlob().getPosition();
+		prevPos = player.getPlayerBlob().getPosition();
 
 		//moves player of wasd keys are pressed and making h, w as border for now
+		if(foc)
 		player.movePlayer(sf::Keyboard(), mapSize.x, mapSize.y);
+
+		if (prevPos != player.getPlayerBlob().getPosition())
+		{
+			packet << player.getPlayerBlob().getPosition().x << player.getPlayerBlob().getPosition().y;
+			socket.send(packet);
+		}
+
+		socket.receive(packet);
+		if (packet >> player2Pos.x >> player2Pos.y)
+		{
+			sf::RectangleShape tempPlayer = player2.getPlayerBlob();
+			tempPlayer.setPosition(player2Pos);
+			player2.setPlayerBlob(tempPlayer);
+		}
+
 		
 		// we keep our view centered on the player
 		player_view.setCenter(player.getPlayerPos().x + player.getPlayerSize().x/2, player.getPlayerPos().y + player.getPlayerSize().y / 2);
@@ -215,7 +280,7 @@ int main() {
 			}
 
 		window.draw(player.getPlayerBlob());
-
+		window.draw(player2.getPlayerBlob());
 		window.display();
 	}
 
