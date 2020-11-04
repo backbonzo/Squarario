@@ -5,4 +5,6 @@ Project1/Debug/
 .idea
 cmake-build-debug/
 
+*.dll
+
 CMakeLists.txt

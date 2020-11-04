@@ -91,12 +91,8 @@ int main() {
 
 	// creating playble area e.g "map"
 	const sf::Vector2f mapSize(5000, 5000);
-
-	// creatinig walls to outline blocked area
-	Wall topWalls(sf::Vector2f(0, 0), mapSize.x, 2);
-	Wall bottomWalls(sf::Vector2f(0, mapSize.y), mapSize.x, 2);
-	Wall leftWalls(sf::Vector2f(0, 0), 2, mapSize.y);
-	Wall rightWalls(sf::Vector2f(mapSize.x, 0), 2, mapSize.y);
+	// creates instance of square wall
+	Wall walls(mapSize, sf::Color::Blue);
 
 	int result = rand() % 4;
 	std::cout << "rand: " << result << std::endl;
@@ -200,10 +196,7 @@ int main() {
 		window.draw(spriteBG);
 
 		// draws walls
-		window.draw(topWalls.getWall());
-		window.draw(bottomWalls.getWall());
-		window.draw(leftWalls.getWall());
-		window.draw(rightWalls.getWall());
+		walls.render(window);
 		// draw text
 		window.draw(scoreText);
 		window.draw(numText);
