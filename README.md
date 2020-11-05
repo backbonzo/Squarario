@@ -23,7 +23,7 @@ TODO: Write usage instructions
 
 ### Squarar.IO TODO List
 
-Trello link coming soon!
+https://trello.com/b/QWu6bkDq/squarario
 
 ## Credits
 
