@@ -4,10 +4,9 @@
 class Wall {
 private:
 	sf::Vector2f wallPos;
-	sf::RectangleShape wall;
+	sf::RectangleShape top, right, bottom, left;
 
 public:
-	Wall(sf::Vector2f, float, float);
-
-	sf::RectangleShape getWall();
+	void render(sf::RenderWindow& window);
+	Wall(sf::Vector2f, sf::Color);
 };
