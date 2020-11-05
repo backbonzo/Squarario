@@ -1,3 +1,4 @@
+
 # Squarar.IO
 
 ![GitHub issues](https://img.shields.io/github/issues-raw/backbonzo/squarario?color=red)
