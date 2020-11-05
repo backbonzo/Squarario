@@ -1,6 +1,12 @@
 # Squarar.IO
 
-An attempt at a singleplayer only(at this state) Agario clone for Windows & Linux. 
+![GitHub issues](https://img.shields.io/github/issues-raw/backbonzo/squarario?color=red)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/backbonzo/Squarario?color=red)
+![GitHub labels](https://img.shields.io/github/labels/backbonzo/squarario/help%20wanted)
+![GitHub contributors](https://img.shields.io/github/contributors/backbonzo/squarario)
+[![CodeFactor](https://www.codefactor.io/repository/github/backbonzo/squarario/badge/dev)](https://www.codefactor.io/repository/github/backbonzo/squarario/overview/dev)
+
+Agario clone for Windows & Linux. 
 Built with C++ and SFML. 
 
 ## Installation
