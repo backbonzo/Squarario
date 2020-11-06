@@ -19,13 +19,12 @@ void updateScore(int numScore, sf::Text& text)
 
 void getPos(sf::Vector2f& pos, sf::Vector2f mapSize) {
 	do
-	{	pos.x = rand() % (int )mapSize.x;
-		pos.y = rand() % (int ) mapSize.y;
+	{	pos.x = rand_r() % (int )mapSize.x;
+		pos.y = rand_r() % (int ) mapSize.y;
 	} while ((!(pos.x > 10 && pos.x < mapSize.x - 10) || !(pos.y > 10 && pos.y < mapSize.y - 10)));
 }
 
 void checkCollisions(std::vector<FoodObj>& foods, Player& player, sf::Vector2f foodpos, int& numScore, sf::Vector2f mapSize, bool& threadsClosed) {
-	
 	while (!threadsClosed)
 	{
 		for (auto&& food : foods)
@@ -69,17 +68,14 @@ void randomTexture(int result, std::string &path)
 }
 
 void checkFoodsToDraw(std::vector<FoodObj>& foods, std::vector<FoodObj>& foodsToDraw, sf::View& player_view, bool& threadsClosed) {
-
 	while (!threadsClosed)
 	{
 		std::vector<FoodObj> temp;
-
 		for (auto&& food : foods)
 		{
 			if (((food.getFoodBlob().getPosition().x < player_view.getCenter().x + 5 + player_view.getSize().x / 2) && (food.getFoodBlob().getPosition().x > player_view.getCenter().x - 5 - player_view.getSize().x / 2)) && ((food.getFoodBlob().getPosition().y < player_view.getCenter().y + 5 + player_view.getSize().y / 2) && (food.getFoodBlob().getPosition().y > player_view.getCenter().y - 5 - player_view.getSize().y / 2)))
 				temp.push_back(food);
 		}
-
 		foodsToDraw = temp;
 	}
 }
@@ -88,13 +84,12 @@ int main() {
 	srand(time(NULL));
 	//window size
 	int H = 1024, W = 1024;
-
 	// creating playble area e.g "map"
 	const sf::Vector2f mapSize(5000, 5000);
 	// creates instance of square wall
 	Wall walls(mapSize, sf::Color::Blue);
 
-	int result = rand() % 4;
+	int result = rand_r() % 4;
 	std::cout << "rand: " << result << std::endl;
 	sf::Texture texture1;
 	std::string path = "";
@@ -154,7 +149,7 @@ int main() {
 	{
 		//getPos foodpos, w, h
 		getPos(foodpos, mapSize);
-		FoodObj food(sf::CircleShape(10.0f), sf::Color(rand() % 255, rand() % 255, rand() % 255), foodpos);
+		FoodObj food(sf::CircleShape(10.0f), sf::Color(rand_r() % 255, rand() % 255, rand() % 255), foodpos);
 		foods.push_back(food);
 	}
 
