@@ -69,23 +69,23 @@ void Player::movePlayer(sf::Keyboard key, int H, int W) {
 		if (this->playerBlob.getPosition().x > 0)
 			player.move(-(this->playerSpeed), 0.0f);
 	}
+	
 	if (key.isKeyPressed(sf::Keyboard::D))
 	{
 		if (this->playerBlob.getPosition().x + this->playerBlob.getSize().x < H)
 			player.move(this->playerSpeed, 0.0f);
-
 	}
+	
 	if (key.isKeyPressed(sf::Keyboard::W))
 	{
 		if (this->playerBlob.getPosition().y > 0)
 			player.move(0.00f, -this->playerSpeed);
-
 	}
+	
 	if (key.isKeyPressed(sf::Keyboard::S))
 	{
 		if (this->playerBlob.getPosition().y + this->playerBlob.getSize().y < W)
 			player.move(0.00f, this->playerSpeed);
-
 	}
 	// update player's instance
 	this->setPlayerBlob(player);
